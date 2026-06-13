@@ -61,7 +61,7 @@ jwt-auth-api/
 ### Clone Repository
 
 ```bash
-git clone https://github.com/your-username/jwt-auth-api.git
+git clone https://github.com/code-sekhar/jwt-auth-api.git
 
 cd jwt-auth-api
 ```
