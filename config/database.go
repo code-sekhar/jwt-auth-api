@@ -29,7 +29,22 @@ func ConnectDB() {
 	if err != nil {
 		log.Fatalf("Failed to connect to the database: ", err)
 	}
-	db.AutoMigrate(&models.User{})
+	err = db.AutoMigrate(
+		&models.Role{},
+		&models.User{},
+	)
+	if err != nil {
+		log.Fatalf("Failed to migrate database: ", err)
+	}
+	roles := []models.Role{
+		{Name: "Super Admin"},
+		{Name: "Admin"},
+		{Name: "Manager"},
+		{Name: "User"},
+	}
+	for _, role := range roles {
+		db.Where("name = ?", role.Name).FirstOrCreate(&role)
+	}
 
 	DB = db
 	fmt.Println("Database connected successfully")

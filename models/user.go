@@ -10,6 +10,8 @@ type User struct {
 	Name     string    `gorm:"type:varchar(100);not null" json:"name"`
 	Email    string    `gorm:"type:varchar(100);unique;not null" json:"email"`
 	Password string    `json:"password"`
+	RoleID   uint
+	Role     Role
 }
 
 func (user *User) BeforeCreate(tx *gorm.DB) (err error) {
