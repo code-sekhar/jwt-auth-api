@@ -16,4 +16,8 @@ func SetupRoutes(router *gin.Engine) {
 		middleware.AuthMiddleware(),
 	)
 	protected.GET("/profile", controllers.Profile)
+	//RBAC Routes
+	admin := protected.Group("/admin")
+	admin.Use(middleware.RoleMiddleware(1))
+	admin.GET("/user", controllers.GetUsers)
 }

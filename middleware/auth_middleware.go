@@ -31,7 +31,11 @@ func AuthMiddleware() gin.HandlerFunc {
 		claims := token.Claims.(jwt.MapClaims)
 
 		c.Set("user_id", claims["user_id"])
-		c.Set("email", claims["email"])
+		c.Set(
+			"role_id",
+			uint(claims["role_id"].(float64)),
+		)
+		//c.Set("email", claims["email"])
 		c.Next()
 	}
 }

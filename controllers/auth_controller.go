@@ -109,3 +109,8 @@ func Profile(c *gin.Context) {
 		"role_id": user.RoleID,
 	})
 }
+func GetUsers(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"message": "Admin Access Granted",
+	})
+}
