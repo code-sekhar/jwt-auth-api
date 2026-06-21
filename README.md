@@ -14,6 +14,15 @@ A secure REST API built with Golang, Gin Framework, PostgreSQL, GORM, and JWT Au
 * UUID Primary Keys
 * Environment Variable Configuration
 
+✓ User Registration
+✓ User Login
+✓ JWT Authentication
+✓ Protected Routes
+✓ Role Based Access Control (RBAC)
+✓ PostgreSQL Integration
+✓ Gin Framework
+✓ GORM ORM
+
 ## Tech Stack
 
 * Golang
