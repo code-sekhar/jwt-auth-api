@@ -20,4 +20,8 @@ func SetupRoutes(router *gin.Engine) {
 	admin := protected.Group("/admin")
 	admin.Use(middleware.RoleMiddleware(1))
 	admin.GET("/user", controllers.GetUsers)
+
+	product := protected.Group("/products")
+	product.Use(middleware.AuthMiddleware()) // Allow Super Admin and Admin
+	product.POST("/", middleware.PermissionMiddleware("create_product"), controllers.CreateProduct)
 }

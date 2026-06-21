@@ -31,6 +31,7 @@ func ConnectDB() {
 	}
 	err = db.AutoMigrate(
 		&models.Role{},
+		&models.Permission{},
 		&models.User{},
 	)
 	if err != nil {
@@ -42,8 +43,47 @@ func ConnectDB() {
 		{Name: "Manager"},
 		{Name: "User"},
 	}
+
+	permissions := []models.Permission{
+		{Name: "create_user"},
+		{Name: "view_user"},
+		{Name: "update_user"},
+		{Name: "delete_user"},
+		{Name: "create_product"},
+		{Name: "view_product"},
+		{Name: "update_product"},
+		{Name: "delete_product"},
+	}
+	// Assign permissions to roles
+	var superAdminRole models.Role
+	db.Where("name = ?", "Super Admin").First(&superAdminRole)
+	var allPermissions []models.Permission
+	db.Find(&allPermissions)
+	db.Model(&superAdminRole).Association("Permissions").Replace(allPermissions)
+	//Admin role permissions
+	var adminRole models.Role
+	db.Where("name = ?", "Admin").First(&adminRole)
+	var adminPermissions []models.Permission
+	db.Where("name IN ?", []string{"create_user", "view_user", "update_product"}).Find(&adminPermissions)
+	db.Model(&adminRole).Association("Permissions").Replace(adminPermissions)
+	//Manager role permissions
+	var managerRole models.Role
+	db.Where("name = ?", "Manager").First(&managerRole)
+	var managerPermissions []models.Permission
+	db.Where("name IN ?", []string{"view_product"}).Find(&managerPermissions)
+	db.Model(&managerRole).Association("Permissions").Replace(managerPermissions)
+	//User role permissions
+	var userRole models.Role
+	db.Where("name = ?", "User").First(&userRole)
+	var userPermissions []models.Permission
+	db.Where("name IN ?", []string{"view_product"}).Find(&userPermissions)
+	db.Model(&userRole).Association("Permissions").Replace(userPermissions)
+
 	for _, role := range roles {
 		db.Where("name = ?", role.Name).FirstOrCreate(&role)
+	}
+	for _, permission := range permissions {
+		db.FirstOrCreate(&permission, models.Permission{Name: permission.Name})
 	}
 
 	DB = db
